@@ -11,9 +11,8 @@ let participantPhone = '';
 let startTime = 0;
 let userAnswers = [];
 
-// Google Form Configuration
-const GOOGLE_FORM_ID = '1FAIpQLSfAcAeorv8XfSvyR9hSMfYA-A7SgQMcIe_WlAAe6tOtv5lj0w';
-const GOOGLE_FORM_URL = `https://docs.google.com/forms/d/e/${GOOGLE_FORM_ID}/formResponse`;
+// Google Sheets Configuration via Apps Script
+const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxsKKgUkK5ra4Wba45MmSueBh5Ww25lDQ8XQ91_AIReYsPNssOuok1kFdA0eqNXO46v/exec';
 
 // Quiz Questions in English and Hindi
 const quizQuestions = [
@@ -375,33 +374,33 @@ function submitQuiz() {
     const timeTaken = Math.round((Date.now() - startTime) / 1000);
     const percentage = Math.round((score / quizQuestions.length) * 100);
 
-    // Submit to Google Forms
-    submitToGoogleForms(participantName, participantEmail, participantPhone, score, percentage, timeTaken);
+    // Submit to Google Sheets
+    submitToGoogleSheets(participantName, participantEmail, participantPhone, score, percentage, timeTaken);
 
     // Show results
     showResults(score, percentage, timeTaken);
 }
 
-// Submit to Google Forms
-function submitToGoogleForms(name, email, phone, score, percentage, timeTaken) {
-    const formData = new FormData();
-    
-    // Add your entry IDs here after you identify them from your Google Form
-    // These are placeholder values - you need to replace with actual entry IDs from your form
-    formData.append('entry.1854329862', new Date().toLocaleString()); // Timestamp
-    formData.append('entry.1569537877', name); // Participant Name
-    formData.append('entry.1640993264', email); // Email
-    formData.append('entry.1568531234', phone); // Phone
-    formData.append('entry.1234567890', `${score}/30`); // Score
-    formData.append('entry.0987654321', `${percentage}%`); // Percentage
-    formData.append('entry.1111111111', Math.floor(timeTaken / 60)); // Time Taken
+// Submit to Google Sheets via Apps Script
+function submitToGoogleSheets(name, email, phone, score, percentage, timeTaken) {
+    const data = {
+        timestamp: new Date().toLocaleString(),
+        name: name,
+        email: email,
+        phone: phone,
+        score: `${score}/30`,
+        percentage: `${percentage}%`,
+        timeTaken: timeTaken
+    };
 
-    // Submit using fetch with no-cors mode (won't show response but will submit)
-    fetch(GOOGLE_FORM_URL, {
+    fetch(GOOGLE_SHEETS_URL, {
         method: 'POST',
-        body: formData,
-        mode: 'no-cors'
-    }).catch(err => console.log('Form submitted'));
+        mode: 'no-cors',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    }).catch(err => console.log('Data submitted to Google Sheets'));
 }
 
 // Show results
