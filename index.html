@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navratri Mythology Quiz - Agrawal Samaj Durg</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="organization-header">
+        <h2>🪔 Agrawal Samaj, Durg 🪔</h2>
+    </div>
+
+    <!-- Language Selector -->
+    <div class="language-selector">
+        <button class="lang-btn active" onclick="setLanguage('en')">English</button>
+        <button class="lang-btn" onclick="setLanguage('hi')">हिंदी</button>
+    </div>
+
+    <!-- Home Page -->
+    <div id="home-page" class="page active">
+        <div class="container">
+            <header class="header">
+                <h1 id="title">🌸 Navratri Mythology Quiz 🌸</h1>
+                <p id="subtitle">Test your knowledge of Maa Durga and Indian mythology</p>
+            </header>
+
+            <section class="welcome-section">
+                <div class="maa-durga">🧔‍♀️</div>
+                <h2 id="welcome-text">Welcome to Navratri Quiz</h2>
+                <p id="welcome-desc">Challenge yourself with our exciting mythology quiz!</p>
+            </section>
+
+            <section class="rules-section">
+                <h2 id="rules-title">📋 Quiz Rules</h2>
+                <div class="rules-grid">
+                    <div class="rule-card">
+                        <div class="rule-icon">📝</div>
+                        <h3 id="rule1-title">Questions</h3>
+                        <p id="rule1-desc">30 MCQ questions</p>
+                    </div>
+                    <div class="rule-card">
+                        <div class="rule-icon">⏱️</div>
+                        <h3 id="rule2-title">Time Limit</h3>
+                        <p id="rule2-desc">5 Minutes</p>
+                    </div>
+                    <div class="rule-card">
+                        <div class="rule-icon">🏆</div>
+                        <h3 id="rule3-title">Winner</h3>
+                        <p id="rule3-desc">Highest score & fastest time</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="goddesses-section">
+                <h2 id="goddesses-title">The 9 Forms of Maa Durga</h2>
+                <div class="goddesses-grid">
+                    <div class="goddess-card">
+                        <div class="goddess-icon">🧔‍♀️</div>
+                        <h3>Shailaputri</h3>
+                    </div>
+                    <div class="goddess-card">
+                        <div class="goddess-icon">🧘‍♀️</div>
+                        <h3>Brahmacharini</h3>
+                    </div>
+                    <div class="goddess-card">
+                        <div class="goddess-icon">👑</div>
+                        <h3>Chandraghanta</h3>
+                    </div>
+                    <div class="goddess-card">
+                        <div class="goddess-icon">✨</div>
+                        <h3>Koosmanda</h3>
+                    </div>
+                    <div class="goddess-card">
+                        <div class="goddess-icon">👶</div>
+                        <h3>Skandamata</h3>
+                    </div>
+                    <div class="goddess-card">
+                        <div class="goddess-icon">⚔️</div>
+                        <h3>Katyayani</h3>
+                    </div>
+                    <div class="goddess-card">
+                        <div class="goddess-icon">🌑</div>
+                        <h3>Kaalratri</h3>
+                    </div>
+                    <div class="goddess-card">
+                        <div class="goddess-icon">✨</div>
+                        <h3>Mahagauri</h3>
+                    </div>
+                    <div class="goddess-card">
+                        <div class="goddess-icon">🎁</div>
+                        <h3>Siddhidatri</h3>
+                    </div>
+                </div>
+            </section>
+
+            <section class="participation-section">
+                <h2 id="participation-title">📌 Participation Details</h2>
+                <p id="participation-desc">All participants will be required to provide their basic information before starting the quiz. Your responses will be recorded for our records.</p>
+            </section>
+
+            <button class="start-btn" onclick="showRegistrationForm()" id="start-btn">Start the Quiz 🎮</button>
+        </div>
+
+        <div class="floating-diya">🪔</div>
+        <div class="floating-diya" style="animation-delay: 1s;">🪔</div>
+        <div class="floating-diya" style="animation-delay: 2s;">🪔</div>
+    </div>
+
+    <!-- Registration Form Page -->
+    <div id="registration-page" class="page">
+        <div class="registration-container">
+            <div class="registration-header">
+                <h2>🌸 Participant Registration 🌸</h2>
+            </div>
+            <form id="registration-form" class="form-group">
+                <div class="form-field">
+                    <label for="participant-name-input" id="label-name">Participant Name *</label>
+                    <input type="text" id="participant-name-input" required placeholder="Enter your full name">
+                </div>
+                <div class="form-field">
+                    <label for="participant-email" id="label-email">Email Address *</label>
+                    <input type="email" id="participant-email" required placeholder="Enter your email">
+                </div>
+                <div class="form-field">
+                    <label for="participant-phone" id="label-phone">Phone Number *</label>
+                    <input type="tel" id="participant-phone" required placeholder="Enter your phone number">
+                </div>
+                <div class="form-buttons">
+                    <button type="button" class="btn-secondary" onclick="backToHome()" id="back-btn">Back</button>
+                    <button type="button" class="btn-primary" onclick="startQuizFromForm()" id="start-form-btn">Start Quiz</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Quiz Page -->
+    <div id="quiz-page" class="page">
+        <div class="quiz-container">
+            <div class="quiz-header">
+                <div class="header-left">
+                    <h2 id="quiz-title">Navratri Quiz</h2>
+                    <p id="participant-display"></p>
+                </div>
+                <div class="header-right">
+                    <div class="language-toggle">
+                        <button class="lang-toggle-btn active" onclick="setLanguage('en')">EN</button>
+                        <button class="lang-toggle-btn" onclick="setLanguage('hi')">HI</button>
+                    </div>
+                    <div class="timer" id="timer">5:00</div>
+                </div>
+            </div>
+
+            <div class="progress-section">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <p class="progress-text" id="progress-text">Question 1 of 30</p>
+            </div>
+
+            <div class="question-section">
+                <h3 id="question-text"></h3>
+                <div id="options-container" class="options-container"></div>
+            </div>
+
+            <div class="quiz-footer">
+                <button class="btn-prev" onclick="previousQuestion()" id="prev-btn">← पिछला / Previous</button>
+                <button class="btn-submit" onclick="submitQuiz()" id="submit-btn">Submit Quiz</button>
+                <button class="btn-next" onclick="nextQuestion()" id="next-btn">Next / अगला →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Page -->
+    <div id="results-page" class="page">
+        <div class="results-container">
+            <div class="certificate">
+                <div class="certificate-header">
+                    🪔 Navratri Quiz 🪔
+                </div>
+                <div class="certificate-body">
+                    <p id="cert-title">Certificate of Participation</p>
+                    <p id="cert-name"></p>
+                    <p id="cert-message"></p>
+                    <div class="certificate-stats">
+                        <div class="stat">
+                            <span id="stat-score-label">Your Score:</span>
+                            <h3 id="final-score"></h3>
+                        </div>
+                        <div class="stat">
+                            <span id="stat-percentage-label">Percentage:</span>
+                            <h3 id="final-percentage"></h3>
+                        </div>
+                        <div class="stat">
+                            <span id="stat-time-label">Time Taken:</span>
+                            <h3 id="final-time"></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="answer-review">
+                <h3 id="review-title">Answer Review</h3>
+                <div id="answer-review-container"></div>
+            </div>
+
+            <button class="btn-primary" onclick="goHome()" id="home-btn">Back to Home</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
