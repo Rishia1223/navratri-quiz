@@ -11,8 +11,8 @@ let participantPhone = '';
 let startTime = 0;
 let userAnswers = [];
 
-// Local Server Configuration for Data Collection
-const SERVER_URL = 'http://localhost:3001';
+// Production Server Configuration
+const SERVER_URL = window.location.hostname === 'localhost' ? 'http://localhost:3001' : 'https://navratri-quiz-backend.up.railway.app';
 
 // Quiz Questions in English and Hindi
 const quizQuestions = [

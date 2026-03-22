@@ -8,9 +8,11 @@ const PORT = process.env.PORT || 3001;
 const DATA_FILE = path.join(__dirname, 'participants.json');
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: ['http://localhost:8080', 'https://rishia1223.github.io', 'https://navratri-quiz.vercel.app'],
+  credentials: true
+}));
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
 
 // Initialize data file if it doesn't exist
 if (!fs.existsSync(DATA_FILE)) {
@@ -70,8 +72,13 @@ app.post('/api/participants', (req, res) => {
     }
 });
 
+// Health check
+app.get('/health', (req, res) => {
+  res.json({ status: 'OK', timestamp: new Date().toISOString() });
+});
+
 // Start server
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-    console.log(`Participant counter: http://localhost:${PORT}/api/participants/count`);
+    console.log(`🚀 Navratri Quiz Server running on port ${PORT}`);
+    console.log(`📊 Data file: ${DATA_FILE}`);
 });
