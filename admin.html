@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navratri Quiz - Admin Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #FFE5B4 0%, #FFD700 50%, #FF6347 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #C41E3A, #FF6B35);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            padding: 30px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .stat-card {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            min-width: 150px;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #C41E3A;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .participants-section {
+            padding: 30px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            color: #C41E3A;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #FF6B35;
+            padding-bottom: 10px;
+        }
+
+        .participants-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .participants-table th,
+        .participants-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .participants-table th {
+            background: #C41E3A;
+            color: white;
+            font-weight: bold;
+        }
+
+        .participants-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .participants-table tr:hover {
+            background: #ffeaa7;
+        }
+
+        .score-high {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .score-medium {
+            color: #f39c12;
+            font-weight: bold;
+        }
+
+        .score-low {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .refresh-btn {
+            background: linear-gradient(135deg, #C41E3A, #FF6B35);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 20px 0;
+            transition: transform 0.2s;
+        }
+
+        .refresh-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🪔 Navratri Quiz Admin Dashboard 🪔</h1>
+            <p>Monitor participant data and quiz performance</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="total-count">0</div>
+                <div class="stat-label">Total Participants</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="avg-score">0%</div>
+                <div class="stat-label">Average Score</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="avg-time">0m</div>
+                <div class="stat-label">Average Time</div>
+            </div>
+        </div>
+
+        <div class="participants-section">
+            <h2 class="section-title">📋 Participant Details</h2>
+            <button class="refresh-btn" onclick="loadData()">🔄 Refresh Data</button>
+            <div id="table-container">
+                <div class="loading">Loading participant data...</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Navratri Quiz System - Admin Dashboard | Data updates automatically</p>
+        </div>
+    </div>
+
+    <script>
+        async function loadData() {
+            try {
+                const response = await fetch('http://localhost:3001/api/participants');
+                const data = await response.json();
+
+                updateStats(data);
+                updateTable(data.participants);
+            } catch (error) {
+                console.error('Failed to load data:', error);
+                document.getElementById('table-container').innerHTML =
+                    '<div class="loading">❌ Failed to load data. Make sure the server is running.</div>';
+            }
+        }
+
+        function updateStats(data) {
+            const participants = data.participants;
+            const count = data.totalCount;
+
+            document.getElementById('total-count').textContent = count;
+
+            if (count > 0) {
+                // Calculate average score
+                const totalScore = participants.reduce((sum, p) => {
+                    const score = parseInt(p.score.split('/')[0]);
+                    return sum + score;
+                }, 0);
+                const avgScorePercent = Math.round((totalScore / (count * 30)) * 100);
+                document.getElementById('avg-score').textContent = avgScorePercent + '%';
+
+                // Calculate average time
+                const totalTime = participants.reduce((sum, p) => sum + parseInt(p.timeTaken), 0);
+                const avgTimeMinutes = Math.round(totalTime / count / 60);
+                document.getElementById('avg-time').textContent = avgTimeMinutes + 'm';
+            }
+        }
+
+        function updateTable(participants) {
+            if (!participants || participants.length === 0) {
+                document.getElementById('table-container').innerHTML =
+                    '<div class="loading">No participants yet. Data will appear here after quiz submissions.</div>';
+                return;
+            }
+
+            let html = `
+                <table class="participants-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Score</th>
+                            <th>Percentage</th>
+                            <th>Time Taken</th>
+                            <th>Submitted</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            participants.forEach(participant => {
+                const score = parseInt(participant.score.split('/')[0]);
+                const percentage = parseInt(participant.percentage);
+                const timeMinutes = Math.floor(parseInt(participant.timeTaken) / 60);
+                const timeSeconds = parseInt(participant.timeTaken) % 60;
+                const timeString = `${timeMinutes}m ${timeSeconds}s`;
+                const date = new Date(participant.timestamp).toLocaleString();
+
+                let scoreClass = 'score-low';
+                if (percentage >= 80) scoreClass = 'score-high';
+                else if (percentage >= 60) scoreClass = 'score-medium';
+
+                html += `
+                    <tr>
+                        <td>${participant.name}</td>
+                        <td>${participant.email}</td>
+                        <td>${participant.phone}</td>
+                        <td>${participant.score}</td>
+                        <td class="${scoreClass}">${participant.percentage}</td>
+                        <td>${timeString}</td>
+                        <td>${date}</td>
+                    </tr>
+                `;
+            });
+
+            html += '</tbody></table>';
+            document.getElementById('table-container').innerHTML = html;
+        }
+
+        // Load data on page load
+        loadData();
+
+        // Auto-refresh every 30 seconds
+        setInterval(loadData, 30000);
+    </script>
+</body>
+</html>

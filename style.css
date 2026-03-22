@@ -246,6 +246,40 @@ body {
     line-height: 1.6;
 }
 
+/* Participant Counter */
+.participant-counter {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.counter-card {
+    background: linear-gradient(135deg, #C41E3A, #FF6B35);
+    color: white;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    min-width: 200px;
+}
+
+.counter-icon {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.counter-card h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    opacity: 0.9;
+}
+
+.counter-number {
+    font-size: 48px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
 /* Buttons */
 .start-btn, .btn-primary {
     background: linear-gradient(135deg, #C41E3A, #FF6B35);

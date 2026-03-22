@@ -1,0 +1,35 @@
+{
+  "participants": [
+    {
+      "id": 1774156838993,
+      "timestamp": "2026-03-22T05:20:38.993Z",
+      "name": "Test User",
+      "email": "test@example.com",
+      "phone": "1234567890",
+      "score": "25/30",
+      "percentage": "83%",
+      "timeTaken": "180"
+    },
+    {
+      "id": 1774156908887,
+      "timestamp": "2026-03-22T05:21:48.887Z",
+      "name": "John Doe",
+      "email": "john@example.com",
+      "phone": "9876543210",
+      "score": "28/30",
+      "percentage": "93%",
+      "timeTaken": "240"
+    },
+    {
+      "id": 1774156955510,
+      "timestamp": "2026-03-22T05:22:35.510Z",
+      "name": "System Test",
+      "email": "test@system.com",
+      "phone": "0000000000",
+      "score": "30/30",
+      "percentage": "100%",
+      "timeTaken": "120"
+    }
+  ],
+  "totalCount": 3
+}

@@ -11,8 +11,8 @@ let participantPhone = '';
 let startTime = 0;
 let userAnswers = [];
 
-// Google Sheets Configuration via Apps Script
-const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxsKKgUkK5ra4Wba45MmSueBh5Ww25lDQ8XQ91_AIReYsPNssOuok1kFdA0eqNXO46v/exec';
+// Local Server Configuration for Data Collection
+const SERVER_URL = 'http://localhost:3001';
 
 // Quiz Questions in English and Hindi
 const quizQuestions = [
@@ -381,10 +381,9 @@ function submitQuiz() {
     showResults(score, percentage, timeTaken);
 }
 
-// Submit to Google Sheets via Apps Script
+// Submit to Local Server
 function submitToGoogleSheets(name, email, phone, score, percentage, timeTaken) {
     const data = {
-        timestamp: new Date().toLocaleString(),
         name: name,
         email: email,
         phone: phone,
@@ -393,14 +392,26 @@ function submitToGoogleSheets(name, email, phone, score, percentage, timeTaken) 
         timeTaken: timeTaken
     };
 
-    fetch(GOOGLE_SHEETS_URL, {
+    fetch(`${SERVER_URL}/api/participants`, {
         method: 'POST',
-        mode: 'no-cors',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
-    }).catch(err => console.log('Data submitted to Google Sheets'));
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('HTTP error! Status: ' + response.status);
+        }
+        return response.json();
+    })
+    .then(result => {
+        console.log('Submission response:', result);
+        if (result.success) {
+            updateParticipantCount();
+        }
+    })
+    .catch(err => console.error('Failed to submit quiz to server:', err));
 }
 
 // Show results
@@ -439,8 +450,23 @@ function showAnswerReview() {
     });
 }
 
-// Go back to home
-function goHome() {
+// Update participant count display
+function updateParticipantCount() {
+    fetch(`${SERVER_URL}/api/participants/count`)
+        .then(response => response.json())
+        .then(data => {
+            const countElement = document.getElementById('participant-count');
+            if (countElement) {
+                countElement.textContent = data.count || 0;
+            }
+        })
+        .catch(err => console.error('Failed to fetch participant count:', err));
+}
+
+// Load participant count when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    updateParticipantCount();
+});
     location.reload();
 }
 
